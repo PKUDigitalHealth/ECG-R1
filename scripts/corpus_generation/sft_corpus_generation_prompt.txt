@@ -1,0 +1,158 @@
+IMPORTANT SYSTEM INSTRUCTION:
+This is a synthetic output generation task.
+The “ECG image” mentioned in the instructions is a placeholder.
+You must NOT state that the ECG image is missing, unavailable, or not visible.
+You must assume that the ECG image and machine measurements are fully available, even if not shown in the prompt.
+You must directly produce the required structured output exactly following the template.
+Never mention the absence of visual input or ask for the missing ECG image.
+Never include any disclaimers.
+
+# Your task: Interpret the provided ECG image using the "Standardized Clinical Protocol". You must Identify key abnormalities AND explicitly rule out differential diagnoses based on evidence.
+
+## Standardized Clinical Protocol (The "17 Steps" Reference)
+Use these thresholds to CONFIRM diagnoses, RULE OUT conditions based on normality, and DIFFERENTIATE based on specific patterns.
+
+### PHASE 1: TECHNICAL QA, RATE & RHYTHM
+* Quality Assurance
+  - Artifacts: Check baseline stability.
+  - Speed: Confirm standard 25 mm/s.
+  - Calibration: Confirm standard 10 mm/mV.
+  - Lead Reversal: If P, QRS, & T are inverted in Lead I, suspect arm lead reversal (vs. Dextrocardia).
+* Rate
+  - Bradycardia: < 60 bpm.
+  - Normal: 60–100 bpm.
+  - Tachycardia: > 100 bpm.
+* Rhythm Diagnosis
+  - Sinus Rhythm: P waves positive in II, III, aVF; negative in aVR.
+  - Irregularly Irregular: Atrial Fibrillation (No P waves).
+  - Occasionally Irregular: Atrial Flutter or Ectopic beats.
+  - Grouped Beating: AV Blocks (Mobitz I).
+* P Wave Morphology
+  - Normal: Lead II < 0.12s width & < 2.5mm height.
+  - Right Atrial Abnormality (RAA): Peaked P (> 2.5 mm) in Lead II.
+  - Left Atrial Abnormality (LAA): Notched P (> 0.12 s) in Lead II OR Deep terminal negative force in V1.
+
+### PHASE 2: AXIS, CONDUCTION & INTERVALS
+* Frontal Plane Axis
+  - Normal (-30° to +90°): Lead I (+) AND Lead II (+).
+  - Left Axis Deviation (LAD): Lead I (+) AND Lead II (-).
+    * Differentiation: If Lead II is equiphasic, axis is -30° (Normal). If negative, True LAD.
+    * Causes: LAH (rS in II, III, aVF), LVH, LBBB, Inferior MI.
+  - Right Axis Deviation (RAD): Lead I (-) AND Lead aVF (+).
+    * Causes: LPH (rS in I, aVL), RVH, Lateral MI.
+* PR Interval
+  - Normal: 0.12–0.20 s.
+  - Short (< 0.12 s): WPW (Delta wave), Low atrial rhythm, Upper AV junctional rhythm.
+  - Prolonged (> 0.20 s): AV Block I, II, or III.
+* QRS Duration
+  - Normal: < 0.10 s.
+  - Intermediate (0.10–0.12 s): Incomplete BBB.
+  - Wide (> 0.12 s): RBBB (rSR' in V1) or LBBB (QS in V1).
+
+### PHASE 3: VOLTAGE, HYPERTROPHY & CHF
+* QRS Voltage & LVH
+  - LVH Criteria: SV1 + RV6 > 35 mm OR R in Lead I > 15 mm OR R in aVL > 11 mm.
+  - Low Voltage Criteria: Limb leads < 5 mm OR Precordial leads < 10 mm.
+* R Wave Progression
+  - Poor Progression (PRWP): R waves do not grow normally V1–V4.
+  - Reversed Progression: Dominant R in V1 (RVH/Posterior MI).
+
+### PHASE 4: ISCHEMIA, INFARCTION & MIMICS
+* ST Elevation (STE)
+  - Threshold: >= 1 mm (Limb) / >= 2 mm (Precordial) in contiguous leads.
+  - STEMI: Convex ("Sad Face") STE + Reciprocal depression.
+  - Pericarditis: Diffuse Concave ("Happy Face") STE + PR depression.
+* Specific Infarction Localization
+  - Inferior: II, III, aVF.
+  - Lateral: I, aVL, V5, V6.
+  - Septal/Anterior: V1–V4.
+  - Right Ventricular (RV) MI: STE V1 > V2.
+* Non-STEMI & Ischemia
+  - ST Depression: Horizontal/Downsloping (Ischemia).
+  - T Wave Inversion: Symmetrical (Ischemia).
+* Q Waves
+  - Pathologic: > 0.03 s wide OR > 0.1 mV deep.
+
+### PHASE 5: ELECTROLYTES & QT
+* QT Interval: Normal QTc <= 440 ms.
+* Electrolytes: Hyperkalemia (Tented T), Hypokalemia (Flat T + U waves).
+
+---
+
+## Guidelines for Analysis (CRITICAL: Systematic Lead Examination)
+1.  **The "Differential Exclusion" Rule:** You must use **both** normal and abnormal findings to reject alternative diagnoses (e.g., "Narrow QRS rules out VT").
+2.  **Systematic Lead Examination:** You must perform a granular analysis of **every lead group** to ensure no pathology is missed. Follow this checklist:
+    *   **Lead I:** Examine QRS amplitude/duration, ST segment, and T wave morphology. Look for lateral wall issues (LVH, BBB, Lateral Ischemia).
+    *   **Lead II:** Analyze P wave amplitude/duration (Atrial Enlargement) and PR interval. Check ST/T for Inferior wall ischemia.
+    *   **Leads III and aVF:** Scrutinize for Q waves, ST deviation, and T wave changes indicative of Inferior Infarction.
+    *   **Lead aVL:** Focus on the high lateral region; check QRS, ST, and T waves for High Lateral Ischemia/Infarction.
+    *   **Lead aVR:** Check for ST elevation (Left Main/Multivessel disease) and T wave inversion.
+    *   **Lead V1:** Assess R wave height (RVH?), rsR′ pattern (RBBB?), and ST-T changes (Septal Ischemia/Posterior MI mirror).
+    *   **Leads V2–V4:** Evaluate Anterior/Anteroseptal regions. Look for Q waves, R-wave progression, and ST-T deviations.
+    *   **Leads V5–V6:** Analyze the Lateral wall for QRS voltage (LVH) and ST-T changes.
+3.  **Ground Truth Adherence:** Your reasoning must align with the `ECG Report` provided in the input, but you must provide the visual evidence (from the lead scan above) that supports it.
+
+## Analysis Workflow & Output Structure
+Follow this sequential logic. Inside the `<think>` block, you must explicitly document your findings for the specific leads mentioned in the "Systematic Lead Examination" guideline.
+
+**Step 1: Technical, Rate & Rhythm**
+*   **Logic:** Check Lead Reversal (I vs aVR) & Artifacts. Calculate Rate. Analyze P-waves in **Lead II** and **V1** to distinguish Sinus vs. AFib/Flutter/VT.
+*   **Output Format:** A single, solid paragraph. (NO lists).
+
+**Step 2: Conduction, Axis & Intervals**
+*   **Logic:** Determine Axis using **Leads I, II, and aVF**. Check PR interval and QRS duration. Scan **V1 and V6** for Bundle Branch Block patterns.
+*   **Output Format:** A single, solid paragraph. (NO lists).
+
+**Step 3: Chamber Hypertrophy & Voltage**
+*   **Logic:** Check **Lead I and aVL** for R-wave voltage. Check **V1 and V6** for SV1+RV6 (Sokolow-Lyon). Evaluate R-wave progression in **V1-V4**.
+*   **Output Format:** A single, solid paragraph. (NO lists).
+
+**Step 4: Ischemia, Infarction & Mimics (CRITICAL: Comprehensive Scan)**
+*   **Logic:** Sequentially analyze **Inferior Leads** (II, III, aVF), **Lateral Leads** (I, aVL, V5, V6), **Anterior/Septal Leads** (V1-V4), and **Lead aVR**. Differentiate Ischemia from mimics.
+*   **Output Format:** A single, solid paragraph. (NO lists).
+
+**Step 5: Electrolytes & QT**
+*   **Logic:** Check T-wave shape (Tented vs Flat) in precordial leads. Check QTc.
+*   **Output Format:** A single, solid paragraph. (NO lists).
+
+**Step 6: Final Medical Reasoning**
+*   **Logic & Output:** Conclude with the final impression matching the Ground Truth.
+
+Here is the required output template:
+
+<think>
+**Step 1: Technical, Rate & Rhythm**
+[Write one single paragraph analysis here. NO bullet points.]
+
+**Step 2: Conduction, Axis & Intervals**
+[Write one single paragraph analysis here. NO bullet points.]
+
+**Step 3: Chamber Hypertrophy & Voltage**
+[Write one single paragraph analysis here. NO bullet points.]
+
+**Step 4: Ischemia, Infarction & Mimics**
+[Write one single paragraph analysis here. NO bullet points.]
+
+**Step 5: Electrolytes & QT**
+[Write one single paragraph analysis here. NO bullet points.]
+
+**Step 6: Final Medical Reasoning**
+[Write one single paragraph conclusion here. NO bullet points.]
+</think>
+
+[Generate the Comprehensive Clinical Response Paragraph here. Streamline the findings into a professional medical narrative following the order above.]
+
+<answer>[Final diagnosis labels from the report, separated by semicolons]</answer>
+
+## Generation Rules (Blind Interpretation & Formatting Constraints)
+1.  **Strict Blind Simulation:** Do NOT mention the existence of the report. Simulate a primary read.
+2.  **Exhaustive Lead Mention:** You must explicitly reference findings from specific leads (e.g., "T wave inversion in V2-V6," "Q waves in II, III, aVF") rather than making vague statements.
+3.  **Formatting Enforcement:** Inside the `<think>` block, under each step header, you must write exactly **ONE single paragraph**. **FORBIDDEN:** Bullet points, hyphens, numbered lists, or line breaks within a step's analysis. The output for each step must look like a continuous block of text.
+4.  **Tag Compliance:** You must start your response with `<think>` and close it with `</think>` before providing the narrative response. You must wrap the final diagnosis in `<answer>` and `</answer>`.
+5.  **Internal Alignment Only:** Use the `ECG Report` as an answer key.
+6.  **Data Quality Check:** If the input `ECG Report` contains a quality warning (e.g., "Warning: Data quality may affect computer interpretation"), you must acknowledge the artifacts in Step 1 and must NOT state that the technical quality is good.
+7.  **Strict Fact Adherence:** Strictly adhere to the provided facts; do not hallucinate, fabricate, or invent details not present in the source.
+
+## Input Data
+**ECG Report (Ground Truth):** {{report}}
+**ECG Machine Measurements:** {{machine_measurements}}

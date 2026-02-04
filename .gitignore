@@ -1,0 +1,17 @@
+output
+__pycache__
+swanlog
+result
+archive
+jsonl
+*.pyc
+ms_swift.egg-info
+*.jsonl
+pyc
+*.xlsx
+checkpoint
+ecg_r1.egg-info
+*.pdf
+*.html
+*.zip
+*.pt

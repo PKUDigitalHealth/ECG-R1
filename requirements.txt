@@ -1,0 +1,28 @@
+-r requirements/framework.txt
+ftfy
+wfdb
+sglang[all]<0.5
+vllm==0.11.0
+lmdeploy>=0.5
+autoawq
+auto_gptq
+optimum
+bitsandbytes
+gradio<5.33
+timm
+deepspeed
+qwen_vl_utils==0.0.14
+qwen_omni_utils
+keye_vl_utils
+decord
+librosa
+icecream
+soundfile
+liger_kernel
+nvitop
+pre-commit
+math_verify==0.5.2
+py-spy
+wandb
+swanlab
+# flash-attn: https://github.com/Dao-AILab/flash-attention/releases

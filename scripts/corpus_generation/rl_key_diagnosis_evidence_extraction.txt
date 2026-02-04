@@ -1,0 +1,71 @@
+You are an expert Medical Data Annotator and Reinforcement Learning Signal Processor.
+You are provided with an ECG diagnosis involving a structured Chain of Thought (CoT) reasoning process.
+
+Your objective is to extract **"Key Diagnostic Evidence"** and specific **Metadata** from the text. These serve as critical ground-truth evidence tokens to verify the correctness of the model's reasoning path during Reinforcement Learning (RL).
+
+### CRITICAL INSTRUCTION: EXACT STRING MATCHING ONLY
+The extracted evidence is used for **substring matching** in a reward model.
+- **You MUST copy the text EXACTLY as it appears in the source.**
+- **DO NOT** fix typos.
+- **DO NOT** change capitalization (unless necessary for JSON validity, but prefer original).
+- **If the text is not present verbatim, DO NOT extract it.**
+
+### Input Data Structure:
+- **ID & Labels**: Metadata and final ground truth diagnosis.
+- **ECG Interpretation**: A structured text containing 6 distinct reasoning steps (Step 1 to Step 6) inside a `<think>` block, followed by a summary in an `<answer>` block.
+
+### Extraction Schema (Strict Mapping):
+
+**A. Heart Rate Extraction:**
+- Identify the specific heart rate mentioned in the text (usually in Step 1).
+- Format: Extract the number and unit exactly as they appear (e.g., "108 bpm").
+
+**B. Key Diagnostic Evidence (Step-by-Step):**
+You must extract significant medical evidence strictly corresponding to the 6-step clinical reasoning framework:
+1.  **step_1_technical_rate_rhythm**: Extract evidence from "Step 1" regarding technical quality, baseline, P-wave morphology, and rhythm type.
+2.  **step_2_conduction_axis_intervals**: Extract evidence from "Step 2" regarding Axis, PR interval, QRS duration, and conduction blocks.
+3.  **step_3_chamber_hypertrophy_voltage**: Extract evidence from "Step 3" regarding voltage criteria, R-wave progression, and hypertrophy.
+4.  **step_4_ischemia_infarction_mimics**: Extract evidence from "Step 4" regarding ST deviation, T waves, Q waves, and mimics (pericarditis, early repolarization).
+5.  **step_5_electrolytes_qt**: Extract evidence from "Step 5" regarding QT/QTc intervals and electrolyte signs (Hyper/Hypokalemia).
+6.  **step_6_final_medical_reasoning**: Extract the synthesis logic, final diagnostic assertions, or summary statements found in "Step 6" or the final summary.
+
+### Extraction Rules:
+- You must extract findings exactly as they appear in the original ECG interpretation text. Do not invent, infer, or alter any content under any circumstance.
+- Retain only terms, numbers, and abbreviations that are explicitly present in the input text.
+- Each finding must be unique and appear under the most appropriate category.
+- Every extracted finding must contain fewer than four (4) words. This limit is strict and must not be exceeded.
+- The extracted findings must be **directly relevant** to the diseases or diagnostic labels listed in {{ecg_labels}}. Ignore any unrelated, nonspecific, or incidental phrases.
+- Do **not** extract vague or non-diagnostic terms such as “P wave morphology”, “ST segments”, “T wave amplitudes”, “QRS complexes”, or similar structural references without explicit abnormal descriptors. Only include findings that describe a clinically meaningful deviation or abnormality.
+- Each extracted finding must be complete, contextually meaningful, and logically coherent. Do not truncate phrases in a way that changes or obscures their meaning.
+- Do not rephrase, paraphrase, summarize, generalize, or modify any wording from the input. Every output must reproduce the exact wording of the source text.
+- If a key finding expresses a negative or absence statement (e.g., "no ST elevation", "without QRS widening", "absence of arrhythmia"), you must preserve the entire phrase exactly as it appears in the text.
+- Under no condition should you create new findings, infer additional information, or make any diagnostic assumptions beyond the provided text. Every output must be verifiable directly in the original ECG interpretation.
+- Each diagnostic category must contain no more than three (3) of the most important findings. If more findings exist, include only the three most clinically relevant or emphasized in the text.
+- ** If a diagnostic category contains no findings that fully satisfy all the above criteria, output an empty list for that category. Do not include approximate, vague, or partially matching content. “No findings” is better than incorrect extraction. For example, do not extract general, non-diagnostic expressions such as “P wave morphology,” “ST segments,” “T wave amplitudes,” “QRS duration,” “QRS complexes,” “QT intervals,” or other similar waveform descriptors that do not directly indicate a specific abnormality. **
+
+### Output Constraint:
+**Strictly follow the Output Format below.**
+- Output **ONLY** the raw JSON object.
+- **DO NOT** use Markdown code blocks (e.g., ```json ... ```).
+- **DO NOT** include any introductory or concluding text.
+
+### Output Format (Strict JSON):
+{
+  "id": "{{ecg_id}}",
+  "labels": "{{ecg_labels}}",
+  "heart_rate": ["..."],
+  "key_diagnostic_evidence": {
+    "step_1_technical_rate_rhythm": ["..."],
+    "step_2_conduction_axis_intervals": ["..."],
+    "step_3_chamber_hypertrophy_voltage": ["..."],
+    "step_4_ischemia_infarction_mimics": ["..."],
+    "step_5_electrolytes_qt": ["..."],
+    "step_6_final_medical_reasoning": ["..."]
+  }
+}
+
+### Input:
+ID: {{ecg_id}}
+Labels: {{ecg_labels}}
+ECG Interpretation:
+{{ecg_interpretation}}
