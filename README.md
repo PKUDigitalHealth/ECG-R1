@@ -131,7 +131,7 @@ For SFT training from scratch:
 
 For RL training from scratch:
   - step 1. specify paths in ```scripts/shells/rl_train_rollout.sh``` and ```scripts/shells/rl_train_dapo.sh```
-  - step 2. make sure you have install ecg-r1 vllm support
+  - step 2. make sure you have installed ecg-r1 vllm support
   - step 3. run ```scripts/shells/rl_train_rollout.sh```
   - step 4. run ```scripts/shells/rl_train_dapo.sh```
 
@@ -164,4 +164,4 @@ If you find ECG-R1 helpful for your research and applications, please cite our p
 ```
 
 ## Acknowledgement
-We thank the authors of [PULSE](https://github.com/AIMedLab/PULSE/tree/dev), [ECG-Chat](https://github.com/YubaoZhao/ECG-Chat) and [GEM](https://github.com/lanxiang1017/GEM) for their publicly released models, datasets, and training codes.
+We thank the authors of [PULSE](https://github.com/AIMedLab/PULSE/tree/dev), [ECG-Chat](https://github.com/YubaoZhao/ECG-Chat), [GEM](https://github.com/lanxiang1017/GEM), and [Swift](https://github.com/modelscope/ms-swift) for their publicly released models, datasets, and training codes.
