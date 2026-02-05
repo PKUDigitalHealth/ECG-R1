@@ -148,7 +148,10 @@ For Modality Missing:
   - step 3. compute metrics: ```scripts/evaluation/modality_missing/compute_score.py```
 
 For ECGBench:
-  - step 1.
+  - step 1. extract images from the .parquet files provided by ECGBench for each subset: ```scripts/ecgbench/extract_img.py```
+  - step 2. generate the initial results by running the inference script: ```scripts/shells/ecgbench_inference.sh```
+  - step 3. convert the initial results into the .jsonl format required by the evaluation scripts: ```ecgbench_convert_scripts.sh```
+  - step 4. compute metrics: ```scripts/evaluation/ecgbench/compute_metrics.py```
 
 *Note*
 - 1. You need to specify the result paths in all evaluation scripts.

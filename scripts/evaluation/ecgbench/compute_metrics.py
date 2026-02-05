@@ -118,7 +118,7 @@ def eval_mmmu(dir):
 def eval_ptb_test(dir):
     print("====ptb test====")
     label_space = ["NORM","MI","STTC","CD","HYP"]
-    golden_data_path = "/data/jinjiarui/datasets/ECG_R1_Dataset/ecg_bench/json_original/ptb-test.json"
+    golden_data_path = "download from https://huggingface.co/datasets/LANSG/ECG-Grounding/tree/main/ecg_bench/ptb-test.json"
     golden_label = {}
     with open(golden_data_path, "r", encoding='utf-8') as f:
         golden_data = json.load(f)
@@ -158,7 +158,7 @@ def eval_ptb_test(dir):
 def eval_cpsc_test(dir):
     print("====cpsc test====")
     label_space = ["NORM", "AF", "I-AVB", "LBBB", "RBBB", "PAC", "PVC", "STD", "STE"]
-    golden_data_path = "/path/to/ECG-Protocol-Guided-Grounding-CoTided-Grounding-CoT/ecg_bench/json_original/cpsc-test.json"
+    golden_data_path = "download from https://huggingface.co/datasets/LANSG/ECG-Grounding/tree/main/ecg_bench//cpsc-test.json"
     golden_label = {}
     with open(golden_data_path, "r", encoding='utf-8') as f:
         golden_data = json.load(f)
@@ -260,7 +260,7 @@ def eval_ecgqa_test(dir):
 def eval_code15_test(dir):
     print("====code15 test====")
     label_space = ["1dAVb", "RBBB", "LBBB", "SB", "ST", "AF"]
-    golden_data_path = "/path/to/ECG-Protocol-Guided-Grounding-CoTided-Grounding-CoT/ecg_bench/json_original/code15-test.json"
+    golden_data_path = "download from https://huggingface.co/datasets/LANSG/ECG-Grounding/tree/main/ecg_bench//code15-test.json"
     golden_label = {}
     with open(golden_data_path, "r", encoding='utf-8') as f:
         golden_data = json.load(f)
@@ -319,7 +319,7 @@ def eval_code15_test(dir):
         
 def eval_csn_test(dir):
     print("====csn test====")
-    with open("/path/to/ECG-Protocol-Guided-Grounding-CoTided-Grounding-CoT/ecg_bench/json_original/csn-test-no-cot.json", "r", encoding='utf-8') as f:
+    with open("download from https://huggingface.co/datasets/LANSG/ECG-Grounding/tree/main/ecg_bench//csn-test-no-cot.json", "r", encoding='utf-8') as f:
         data = json.load(f)
         answer_dict = {item["id"]: item["conversations"][1]["value"][0] for item in data}
     
@@ -361,7 +361,7 @@ def eval_csn_test(dir):
         
 def eval_g12_test(dir):
     print("====g12 test====")
-    with open("/path/to/ECG-Protocol-Guided-Grounding-CoTided-Grounding-CoT/ecg_bench/json_original/g12-test-no-cot.json", "r", encoding='utf-8') as f:
+    with open("download from https://huggingface.co/datasets/LANSG/ECG-Grounding/tree/main/ecg_bench//g12-test-no-cot.json", "r", encoding='utf-8') as f:
         data = json.load(f)
         answer_dict = {item["id"]: item["conversations"][1]["value"][0] for item in data}
     
@@ -401,8 +401,8 @@ def eval_g12_test(dir):
 
 
 if __name__ == "__main__":
-    MODEL_NAME="ecg-r1-8b-dapo-v16-20251227-163009-checkpoint-493"
-    root = f"scripts/ecgbench_evaluation/result_processed_for_eval/{MODEL_NAME}"
+    MODEL_NAME="ECG-R1-8B-RL"
+    root = f"scripts/evaluation/ecgbench/result_processed_for_eval/{MODEL_NAME}"
     
     all_results = {}
     all_results.update(eval_ptb_test(root))
@@ -445,7 +445,7 @@ if __name__ == "__main__":
     df = pd.DataFrame([data_row], index=[MODEL_NAME], columns=columns_index)
     df.index.name = "Model"
 
-    output_excel_path = "scripts/ecgbench_evaluation/results.xlsx"
+    output_excel_path = "scripts/evalutaion/ecgbench/results.xlsx"
     
     try:
         if os.path.exists(output_excel_path):
