@@ -38,7 +38,7 @@ Electrocardiography (ECG) serves as an indispensable diagnostic tool in clinical
 ## Resource
 
 
-#### Paper: 📄 [Arxiv](https://arxiv.org/pdf/2503.06073)
+#### Paper: 📄 [Arxiv](https://arxiv.org/pdf/2602.04279)
 
 #### Model: 🤗 [ECG-R1-8B](https://huggingface.co/PKUDigitalHealth/ECG-R1-8B-RL)
 
@@ -161,6 +161,15 @@ For ECGBench:
 If you find ECG-R1 helpful for your research and applications, please cite our paper:
 
 ```bibtex
+@misc{jin2026ecgr1,
+      title={ECG-R1: Protocol-Guided and Modality-Agnostic MLLM for Reliable ECG Interpretation}, 
+      author={Jiarui Jin and Haoyu Wang and Xingliang Wu and Xiaocheng Fang and Xiang Lan and Zihan Wang and Deyun Zhang and Bo Liu and Yingying Zhang and Xian Wu and Hongyan Li and Shenda Hong},
+      year={2026},
+      eprint={2602.04279},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2602.04279}, 
+}
 ```
 
 ## Acknowledgement
